@@ -23,11 +23,11 @@ enum Endpoint: URLEndpoint {
     }
 }
 
-public protocol URLEndpoint {
+protocol URLEndpoint {
     var path: [PathValue] { get }
 }
 
-public extension URLEndpoint {
+extension URLEndpoint {
     var pathString: String {
         return path.string
     }

@@ -18,13 +18,13 @@ public protocol DataDispatcher: class {
     func dataFuture(from urlRequest: URLRequest) -> ResponseFuture<Response<Data?>>
 }
 
-public extension DataDispatcher {
+extension DataDispatcher {
     /// Create a future to make a data request.
     ///
     /// - Parameters:
     ///   - callback: A callback that returns the future to send. Returning nil will cancel the request
     /// - Returns: The promise that will send the request.
-    func dataFuture(from callback: @escaping () throws -> URLRequest?) -> ResponseFuture<Response<Data?>> {
+    public func dataFuture(from callback: @escaping () throws -> URLRequest?) -> ResponseFuture<Response<Data?>> {
         return ResponseFuture<Response<Data?>> { [weak self] future in
             guard let self = self else {
                 future.cancel()

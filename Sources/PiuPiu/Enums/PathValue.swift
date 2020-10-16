@@ -40,9 +40,9 @@ public enum PathValue: Equatable, CustomStringConvertible {
 }
 
 
-public extension Sequence where Iterator.Element == PathValue {
+extension Sequence where Iterator.Element == PathValue {
     /// The sting representation of these values used for constructing urls.
-    var string: String {
+    public var string: String {
         return self.map({ $0.string }).joined(separator: "/")
     }
 }

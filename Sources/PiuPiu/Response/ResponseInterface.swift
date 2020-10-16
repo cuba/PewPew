@@ -17,8 +17,8 @@ public protocol ResponseInterface {
     var urlRequest: URLRequest { get }
 }
 
-public extension ResponseInterface where T == Data? {
-    func makeHTTPResponse() throws -> HTTPResponse<T> {
+extension ResponseInterface where T == Data? {
+    public func makeHTTPResponse() throws -> HTTPResponse<T> {
         // Ensure there is a http response
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             throw ResponseError.notHTTPResponse
@@ -31,7 +31,7 @@ public extension ResponseInterface where T == Data? {
     ///
     /// - Returns: The unwrapped object
     /// - Throws: `SerializationError`
-    func unwrapData() throws -> Data {
+    public func unwrapData() throws -> Data {
         // Check if we have the data we need
         guard let unwrappedData = data else {
             throw ResponseError.unexpectedEmptyResponse
@@ -45,7 +45,7 @@ public extension ResponseInterface where T == Data? {
     /// - Parameter encoding: The string encoding type. The dafault is `.utf8`.
     /// - Returns: The decoded object
     /// - Throws: `SerializationError`
-    func decodeString(encoding: String.Encoding = .utf8) throws -> String {
+    public func decodeString(encoding: String.Encoding = .utf8) throws -> String {
         let data = try unwrapData()
         
         // Attempt to deserialize the object.
@@ -61,7 +61,7 @@ public extension ResponseInterface where T == Data? {
     /// - Parameter options: Reading options. Default is set to `.mutableContainers`.
     /// - Returns: JSON object as `Any`
     /// - Throws: `SerializationError`
-    func decodeJSONObject(options: JSONSerialization.ReadingOptions = .mutableContainers) throws -> Any {
+    public func decodeJSONObject(options: JSONSerialization.ReadingOptions = .mutableContainers) throws -> Any {
         let data = try self.unwrapData()
         return try JSONSerialization.jsonObject(with: data, options: options)
     }
@@ -73,7 +73,7 @@ public extension ResponseInterface where T == Data? {
     ///   - dateDecodingStrategy: The default date encoding strategy to use. The default is `.rfc3339` (`yyyy-MM-dd'T'HH:mm:ssZZZZZ`)
     /// - Returns: The decoded object
     /// - Throws: `SerializationError`
-    func decode<D: Decodable>(_ type: D.Type, dateDecodingStrategy: JSONDecoder.DateDecodingStrategy) throws  -> D {
+    public func decode<D: Decodable>(_ type: D.Type, dateDecodingStrategy: JSONDecoder.DateDecodingStrategy) throws  -> D {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = dateDecodingStrategy
         return try decode(type, using: decoder)
@@ -86,7 +86,7 @@ public extension ResponseInterface where T == Data? {
     ///   - decoder: The decoder to use.
     /// - Returns: The decoded object
     /// - Throws: `SerializationError`
-    func decode<D: Decodable>(_ type: D.Type, using decoder: JSONDecoder = JSONDecoder()) throws  -> D {
+    public func decode<D: Decodable>(_ type: D.Type, using decoder: JSONDecoder = JSONDecoder()) throws  -> D {
         let data = try self.unwrapData()
         return try decoder.decode(type, from: data)
     }
@@ -98,14 +98,14 @@ public extension ResponseInterface where T == Data? {
     ///   - decoder: The decoder to use.
     /// - Returns: The decoded object
     /// - Throws: `SerializationError`
-    func decodeIfPresent<D: Decodable>(_ type: D.Type, using decoder: JSONDecoder = JSONDecoder()) throws  -> D? {
+    public func decodeIfPresent<D: Decodable>(_ type: D.Type, using decoder: JSONDecoder = JSONDecoder()) throws  -> D? {
         guard let data = self.data else { return nil }
         return try decoder.decode(type, from: data)
     }
     
     /// A method to print the request and response in the console.
     /// **Warning** This should not be used in a production environment.
-    func debug() {
+    public func debug() {
         print("===========================================")
         print(makeRequestMarkdown())
         print("-------------------------------------------")
@@ -115,7 +115,7 @@ public extension ResponseInterface where T == Data? {
     
     /// A method to print the request in the console.
     /// **Warning** This should not be used in a production environment.
-    func makeRequestMarkdown() -> String {
+    public func makeRequestMarkdown() -> String {
         var components: [String] = [
             "## REQUEST",
             "[\(urlRequest.httpMethod!)] \(urlRequest.url!)"
@@ -147,7 +147,7 @@ public extension ResponseInterface where T == Data? {
     
     /// A method to print the response in the console.
     /// **Warning** This should not be used in a production environment.
-    func makeResponseMarkdown() -> String {
+    public func makeResponseMarkdown() -> String {
         var components: [String] = ["## RESPONSE"]
         
         if let httpResponse = self.urlResponse as? HTTPURLResponse {

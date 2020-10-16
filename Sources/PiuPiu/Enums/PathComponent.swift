@@ -44,9 +44,9 @@ public enum PathComponent: Equatable, CustomStringConvertible {
     }
 }
 
-public extension Sequence where Iterator.Element == PathComponent {
+extension Sequence where Iterator.Element == PathComponent {
     /// A string representation of these components seperated by "/"
-    var displayValue: String {
+    public var displayValue: String {
         return self.map({ $0.displayValue }).joined(separator: "/")
     }
 }

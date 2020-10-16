@@ -10,8 +10,8 @@ import Foundation
 
 // MARK: - Encoding
 
-public extension URLRequest {
-    init(url: URL, method: HTTPMethod) {
+extension URLRequest {
+    public init(url: URL, method: HTTPMethod) {
         self.init(url: url)
         self.httpMethod = method.rawValue
     }
@@ -22,7 +22,7 @@ public extension URLRequest {
     ///   - encodable: The `Encodable` object to serialize into JSON using the `JSONEncoder`.
     ///   - encoder: The encoder to use for encoding the encodable object. Default is a the system encoder.
     /// - Throws: Any serialization errors thrown by the `JSONEncoder`.
-    mutating func setJSONBody<T: Encodable>(encodable: T, encoder: JSONEncoder = JSONEncoder()) throws {
+    public mutating func setJSONBody<T: Encodable>(encodable: T, encoder: JSONEncoder = JSONEncoder()) throws {
         self.httpBody = try encoder.encode(encodable)
         ensureJSONContentType()
     }
@@ -32,7 +32,7 @@ public extension URLRequest {
     /// - Parameters:
     ///   - string: The string to add to the body.
     ///   - encoding: The encoding type to use when adding the string.
-    mutating func setHTTPBody(string: String, encoding: String.Encoding = .utf8) {
+    public mutating func setHTTPBody(string: String, encoding: String.Encoding = .utf8) {
         self.httpBody = string.data(using: encoding)
     }
     
@@ -41,7 +41,7 @@ public extension URLRequest {
     /// - Parameters:
     ///   - string: The string to add to the body.
     ///   - encoding: The encoding type to use when adding the string.
-    mutating func setJSONBody(string: String, encoding: String.Encoding = .utf8) {
+    public mutating func setJSONBody(string: String, encoding: String.Encoding = .utf8) {
         self.setHTTPBody(string: string, encoding: encoding)
         ensureJSONContentType()
     }
@@ -53,7 +53,7 @@ public extension URLRequest {
     ///   - jsonObject: The JSON Object to encode into the request body using `JSONSerialization`.
     ///   - options: The writing options to use when encoding.
     /// - Throws: Any errors thrown by `JSONSerialization`.
-    mutating func setHTTPBody(jsonObject: [String: Any?], options: JSONSerialization.WritingOptions = []) throws {
+    public mutating func setHTTPBody(jsonObject: [String: Any?], options: JSONSerialization.WritingOptions = []) throws {
         self.httpBody = try JSONSerialization.data(withJSONObject: jsonObject, options: options)
     }
     
@@ -63,7 +63,7 @@ public extension URLRequest {
     ///   - jsonObject: The JSON Object to encode into the request body using `JSONSerialization`. This does the same thing as the `setHTTPBody(jsonArray:options:)` method except that it also adds to `Content-Type` header.
     ///   - options: The writing options to use when encoding.
     /// - Throws: Any errors thrown by `JSONSerialization`.
-    mutating func setJSONBody(jsonObject: [String: Any?], options: JSONSerialization.WritingOptions = []) throws {
+    public mutating func setJSONBody(jsonObject: [String: Any?], options: JSONSerialization.WritingOptions = []) throws {
         try setHTTPBody(jsonObject: jsonObject, options: options)
         ensureJSONContentType()
     }
@@ -74,7 +74,7 @@ public extension URLRequest {
     ///   - jsonArray: The JSON Object array to encode into the request body using `JSONSerialization`.
     ///   - options: The writing options to use when encoding.
     /// - Throws: Any errors thrown by `JSONSerialization`.
-    mutating func setHTTPBody(jsonArray: [[String: Any?]], options: JSONSerialization.WritingOptions = []) throws {
+    public mutating func setHTTPBody(jsonArray: [[String: Any?]], options: JSONSerialization.WritingOptions = []) throws {
         self.httpBody = try JSONSerialization.data(withJSONObject: jsonArray, options: options)
     }
     
@@ -84,7 +84,7 @@ public extension URLRequest {
     ///   - jsonArray: The JSON Object array to encode into the request body using `JSONSerialization`.
     ///   - options: The writing options to use when encoding.
     /// - Throws: Any errors thrown by `JSONSerialization`.
-    mutating func setJSONBody(jsonArray: [[String: Any?]], options: JSONSerialization.WritingOptions = []) throws {
+    public mutating func setJSONBody(jsonArray: [[String: Any?]], options: JSONSerialization.WritingOptions = []) throws {
         try setHTTPBody(jsonArray: jsonArray, options: options)
         ensureJSONContentType()
     }
@@ -94,11 +94,11 @@ public extension URLRequest {
     /// - Parameters:
     ///   - encodable: The `Encodable` object to serialize into JSON using the `JSONEncoder`.
     /// - Throws: Any serialization errors thrown by the `JSONEncoder`.
-    mutating func setJSONBody<T: Encodable>(_ encodable: T, encoder: JSONEncoder = JSONEncoder()) throws {
+    public mutating func setJSONBody<T: Encodable>(_ encodable: T, encoder: JSONEncoder = JSONEncoder()) throws {
         try setJSONBody(encodable: encodable, encoder: encoder)
     }
     
-    mutating func ensureJSONContentType() {
+    public mutating func ensureJSONContentType() {
         if self.value(forHTTPHeaderField: "Content-Type") == nil {
             self.addValue("application/json", forHTTPHeaderField: "Content-Type")
         }
@@ -107,12 +107,12 @@ public extension URLRequest {
 
 // MARK: - Testing Extensions
 
-public extension URLRequest {
+extension URLRequest {
     /// Returns values extracted from the path. The path must match exactly.
     ///
     /// - Parameter pattern: The pattern to match which must be exactly the same.
     /// - Returns: The matched path values. Any incosistency will return nil. The size of the array will always be the number of wildcards passed.
-    func pathValues(matching pattern: [PathComponent]) -> [PathValue]? {
+    public func pathValues(matching pattern: [PathComponent]) -> [PathValue]? {
         return url?.pathValues(matching: pattern)
     }
     
@@ -122,7 +122,7 @@ public extension URLRequest {
     ///   - index: The index of the extracted value. Needs to be within the bounds of the pattern or the application will crash.
     ///   - pattern: The pattern used to extract the values
     /// - Returns: An integer value if found in the exact position of the extracted pattern.
-    func integerValue(atIndex index: Int, matching pattern: [PathComponent]) -> Int? {
+    public func integerValue(atIndex index: Int, matching pattern: [PathComponent]) -> Int? {
         return url?.integerValue(atIndex: index, matching: pattern)
     }
     
@@ -132,7 +132,7 @@ public extension URLRequest {
     ///   - index: The index of the extracted value. Needs to be within the bounds of the pattern or the application will crash.
     ///   - pattern: The pattern used to extract the values
     /// - Returns: An integer value if found in the exact position of the extracted pattern.
-    func stringValue(atIndex index: Int, matching pattern: [PathComponent]) -> String? {
+    public func stringValue(atIndex index: Int, matching pattern: [PathComponent]) -> String? {
         return url?.stringValue(atIndex: index, matching: pattern)
     }
     
@@ -140,7 +140,7 @@ public extension URLRequest {
     ///
     /// - Parameter pattern: The pattern to match
     /// - Returns: true if the path mathes the given pattern.
-    func pathMatches(pattern: [PathComponent]) -> Bool {
+    public func pathMatches(pattern: [PathComponent]) -> Bool {
         return url?.pathMatches(pattern: pattern) ?? false
     }
 }
