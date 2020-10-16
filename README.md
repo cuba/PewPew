@@ -813,9 +813,9 @@ public protocol EncodingTransform {
 
 public protocol DecodingTransform {
     associatedtype JSONSource: Decodable
-    associatedtype ValueDesitination
+    associatedtype ValueDestination
     
-    func transform(json: Self.JSONSource) throws -> Self.ValueDesitination
+    func transform(json: Self.JSONSource) throws -> Self.ValueDestination
 }
 ```
 

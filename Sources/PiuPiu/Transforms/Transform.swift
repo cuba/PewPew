@@ -20,10 +20,10 @@ public protocol EncodingTransform {
 /// Defines a protocol for decoding data from JSON
 public protocol DecodingTransform {
     associatedtype JSONSource: Decodable
-    associatedtype ValueDesitination
+    associatedtype ValueDestination
     
     /// Transform a `Decodable` value to any type. The `Decodable` type specified will be parsed by a `Decoder`.
-    func transform(json: Self.JSONSource) throws -> Self.ValueDesitination
+    func transform(json: Self.JSONSource) throws -> Self.ValueDestination
 }
 
 /// A protocol that encompasses both `EncodingTransform` and `DecodingTransform`
