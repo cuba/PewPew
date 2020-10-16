@@ -18,7 +18,7 @@ public struct Response<T>: ResponseInterface {
     ///
     /// - Parameters:
     ///   - data: The data object to return.
-    ///   - httpResponse: The `HTTPURLresponse` that is returned.
+    ///   - httpResponse: The `HTTPURLResponse` that is returned.
     ///   - urlRequest: The original `URLRequest` that was created.
     ///   - statusCode: The status code enum that is returned.
     public init(data: T, urlRequest: URLRequest, urlResponse: URLResponse) {

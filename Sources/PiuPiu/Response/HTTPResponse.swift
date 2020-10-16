@@ -33,7 +33,7 @@ public struct HTTPResponse<T>: ResponseInterface {
     /// - Parameters:
     ///   - data: The data object to return.
     ///   - urlRequest: The original `URLRequest` that was created.   
-    ///   - httpResponse: The `HTTPURLresponse` that is returned.
+    ///   - httpResponse: The `HTTPURLResponse` that is returned.
     public init(data: T, urlRequest: URLRequest, httpResponse: HTTPURLResponse) {
         self.data = data
         self.urlRequest = urlRequest
